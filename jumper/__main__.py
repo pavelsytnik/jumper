@@ -1,6 +1,16 @@
+import os
+
 import pygame
 
+
+def app_path(path: str) -> str:
+    app_dir = os.path.join(os.path.dirname(__file__), "..")
+    return os.path.join(app_dir, path)
+
+
 pygame.init()
+
+font = pygame.font.Font(app_path("fonts/fira-code-regular.ttf"), 24)
 
 screen = pygame.display.set_mode((800, 800))
 screen_rect = screen.get_rect()
@@ -46,6 +56,16 @@ while running:
         cube.bottom = screen_rect.bottom
 
     screen.fill((25, 0, 50))
+
+    y_pos_text = font.render(f"Jump Height: {JUMP_HEIGHT}px", True, (255, 255, 255))
+    screen.blit(y_pos_text, (10, 10))
+    y_pos_text = font.render(f"Apex Time: {JUMP_TIME}s", True, (255, 255, 255))
+    screen.blit(y_pos_text, (10, 40))
+    y_pos_text = font.render(
+        f"Y: {screen_rect.h - cube.bottom}px", True, (255, 255, 255)
+    )
+    screen.blit(y_pos_text, (10, 70))
+
     pygame.draw.line(
         screen,
         (225, 255, 255),
