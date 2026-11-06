@@ -57,10 +57,12 @@ while running:
 
     screen.fill((25, 0, 50))
 
-    y_pos_text = font.render(f"Jump Height: {JUMP_HEIGHT}px", True, (255, 255, 255))
-    screen.blit(y_pos_text, (10, 10))
-    y_pos_text = font.render(f"Apex Time: {JUMP_TIME}s", True, (255, 255, 255))
-    screen.blit(y_pos_text, (10, 40))
+    jump_height_text = font.render(
+        f"Jump Height: {JUMP_HEIGHT}px", True, (255, 255, 255)
+    )
+    screen.blit(jump_height_text, (10, 10))
+    jump_time_text = font.render(f"Jump Time: {JUMP_TIME}s", True, (255, 255, 255))
+    screen.blit(jump_time_text, (10, 40))
     y_pos_text = font.render(
         f"Y: {screen_rect.h - cube.bottom}px", True, (255, 255, 255)
     )
