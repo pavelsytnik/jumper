@@ -71,6 +71,13 @@ while running:
 
     menu.draw(screen, font)
 
+    velocity_text = font.render(
+        f"Velocity: {-cube.velocity:.0f}px/s", True, (255, 255, 255)
+    )
+    velocity_text_rect = velocity_text.get_rect()
+    velocity_text_rect.bottomleft = (10, screen_rect.bottom - 40)
+    screen.blit(velocity_text, velocity_text_rect)
+
     y_pos_text = font.render(
         f"Y: {screen_rect.h - cube.y:.0f}px", True, (255, 255, 255)
     )
