@@ -4,6 +4,7 @@ import pygame
 
 from jumper.jump_physics import JumpPhysics
 from jumper.jump_menu import JumpMenu, JumpParameter
+from jumper.point_particle import PointParticle
 
 
 def app_path(path: str) -> str:
@@ -23,11 +24,9 @@ clock = pygame.time.Clock()
 fps = pygame.display.get_current_refresh_rate()
 dt = clock.tick(fps)
 
-cube = pygame.Rect((0, 0), (100, 100))
-cube.midbottom = screen_rect.midbottom
-cube_bottom = float(cube.bottom)
-
 jump = JumpPhysics()
+
+cube = PointParticle(jump, screen_rect.bottom)
 
 menu = JumpMenu(
     [
@@ -52,7 +51,6 @@ menu = JumpMenu(
     ],
 )
 
-velocity = 0.0
 running = True
 
 while running:
@@ -62,29 +60,17 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
-                if cube.bottom >= screen_rect.bottom:
-                    velocity = jump.initial_velocity
-
         menu.handle(event)
+        cube.handle(event)
 
-    old_velocity = velocity
-    velocity += jump.gravity * dt
-    cube_bottom += (old_velocity + velocity) / 2 * dt
-    cube.bottom = round(cube_bottom)
-
-    if cube.bottom >= screen_rect.bottom:
-        velocity = 0.0
-        cube_bottom = float(screen_rect.bottom)
-        cube.bottom = screen_rect.bottom
+    cube.update(dt)
 
     screen.fill((25, 0, 50))
 
     menu.draw(screen, font)
 
     y_pos_text = font.render(
-        f"Y: {screen_rect.h - cube.bottom}px", True, (255, 255, 255)
+        f"Y: {screen_rect.h - cube.y:.0f}px", True, (255, 255, 255)
     )
     screen.blit(y_pos_text, (10, 70))
 
@@ -94,5 +80,5 @@ while running:
         (0, screen_rect.h - jump.height),
         (screen_rect.w, screen_rect.h - jump.height),
     )
-    pygame.draw.rect(screen, (225, 225, 175), cube)
+    cube.draw(screen, (225, 225, 175), 100)
     pygame.display.flip()
