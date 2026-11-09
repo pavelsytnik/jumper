@@ -14,6 +14,8 @@ def app_path(path: str) -> str:
 
 pygame.init()
 
+pygame.key.set_repeat(250, 50)
+
 font = pygame.font.Font(app_path("fonts/fira-code-regular.ttf"), 24)
 
 screen = pygame.display.set_mode((800, 800))
