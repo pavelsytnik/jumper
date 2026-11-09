@@ -74,7 +74,9 @@ while running:
     y_pos_text = font.render(
         f"Y: {screen_rect.h - cube.y:.0f}px", True, (255, 255, 255)
     )
-    screen.blit(y_pos_text, (10, 70))
+    y_pos_text_rect = y_pos_text.get_rect()
+    y_pos_text_rect.bottomleft = (10, screen_rect.bottom - 10)
+    screen.blit(y_pos_text, y_pos_text_rect)
 
     pygame.draw.line(
         screen,
