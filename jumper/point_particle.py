@@ -4,10 +4,12 @@ from jumper.jump_physics import JumpPhysics
 
 
 class PointParticle:
-    def __init__(self, physics: JumpPhysics, ground: int) -> None:
+    GROUND = 0.0
+
+    def __init__(self, physics: JumpPhysics) -> None:
         self.physics = physics
-        self.ground = ground
-        self.y = float(ground)
+        self.ground = PointParticle.GROUND
+        self.height = PointParticle.GROUND
         self.velocity = 0.0
         self.grounded = True
 
@@ -24,12 +26,12 @@ class PointParticle:
             return
 
         old_velocity = self.velocity
-        self.velocity += self.physics.gravity * dt
-        self.y += (old_velocity + self.velocity) / 2 * dt
+        self.velocity += self.physics.acceleration * dt
+        self.height += (old_velocity + self.velocity) / 2 * dt
 
-        if self.y >= self.ground:
+        if self.height <= self.ground:
             self.velocity = 0.0
-            self.y = float(self.ground)
+            self.height = self.ground
             self.grounded = True
 
     def draw(
@@ -40,6 +42,6 @@ class PointParticle:
     ) -> None:
         cube = pygame.rect.Rect(0, 0, side, side)
         cube.midbottom = surface.get_rect().midbottom
-        cube.bottom = self.y
+        cube.bottom -= self.height
 
         pygame.draw.rect(surface, color, cube)
