@@ -1,18 +1,9 @@
-from enum import Enum, auto
 import os
 
 import pygame
 
 from jumper.jump_physics import JumpPhysics
-
-
-class JumpParameter(Enum):
-    HEIGHT = auto()
-    TIME = auto()
-
-    def next(self) -> JumpParameter:
-        members = list(JumpParameter)
-        return members[(members.index(self) + 1) % len(members)]
+from jumper.jump_menu import JumpMenu, JumpParameter
 
 
 def app_path(path: str) -> str:
@@ -38,7 +29,28 @@ cube_bottom = float(cube.bottom)
 
 jump = JumpPhysics()
 
-selected_jump_param = JumpParameter.HEIGHT
+menu = JumpMenu(
+    [
+        JumpParameter(
+            name="Jump Height",
+            get_value=lambda: jump.height,
+            set_value=lambda v: setattr(jump, "height", v),
+            min=5,
+            max=700,
+            step=5,
+            unit="px",
+        ),
+        JumpParameter(
+            name="Jump Time",
+            get_value=lambda: int(jump.time * 1000),
+            set_value=lambda v: setattr(jump, "time", v / 1000),
+            min=100,
+            max=10000,
+            step=100,
+            unit="ms",
+        ),
+    ],
+)
 
 velocity = 0.0
 running = True
@@ -55,20 +67,7 @@ while running:
                 if cube.bottom >= screen_rect.bottom:
                     velocity = jump.initial_velocity
 
-            elif event.key == pygame.K_TAB:
-                selected_jump_param = selected_jump_param.next()
-
-            elif event.key in (pygame.K_UP, pygame.K_DOWN):
-                if event.key == pygame.K_UP:
-                    if selected_jump_param == JumpParameter.HEIGHT:
-                        jump.height = min(700, jump.height + 5)
-                    elif selected_jump_param == JumpParameter.TIME:
-                        jump.time = min(10.0, jump.time + 0.1)
-                elif event.key == pygame.K_DOWN:
-                    if selected_jump_param == JumpParameter.HEIGHT:
-                        jump.height = max(5, jump.height - 5)
-                    elif selected_jump_param == JumpParameter.TIME:
-                        jump.time = max(0.1, jump.time - 0.1)
+        menu.handle(event)
 
     old_velocity = velocity
     velocity += jump.gravity * dt
@@ -82,22 +81,7 @@ while running:
 
     screen.fill((25, 0, 50))
 
-    jump_height_text = font.render(
-        f"Jump Height: {jump.height}px", True, (255, 255, 255)
-    )
-    jump_height_text_rect = screen.blit(jump_height_text, (10, 10))
-
-    jump_time_text = font.render(f"Jump Time: {jump.time:.1f}s", True, (255, 255, 255))
-    jump_time_text_rect = screen.blit(jump_time_text, (10, 40))
-
-    if selected_jump_param == JumpParameter.HEIGHT:
-        selected_box = pygame.Surface(jump_height_text.size, pygame.SRCALPHA)
-        selected_box.fill((255, 255, 255, 64))
-        screen.blit(selected_box, jump_height_text_rect)
-    elif selected_jump_param == JumpParameter.TIME:
-        selected_box = pygame.Surface(jump_time_text.size, pygame.SRCALPHA)
-        selected_box.fill((255, 255, 255, 64))
-        screen.blit(selected_box, jump_time_text_rect)
+    menu.draw(screen, font)
 
     y_pos_text = font.render(
         f"Y: {screen_rect.h - cube.bottom}px", True, (255, 255, 255)
