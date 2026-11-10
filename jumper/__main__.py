@@ -2,9 +2,9 @@ import os
 
 import pygame
 
-from jumper.jump_physics import JumpPhysics
-from jumper.jump_menu import JumpMenu, JumpParameter
-from jumper.point_particle import PointParticle
+from jumper.physics import JumpPhysics
+from jumper.menu import JumpMenu, JumpParameter
+from jumper.particle import PointParticle
 
 
 def app_path(path: str) -> str:

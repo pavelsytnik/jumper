@@ -1,6 +1,6 @@
 import pygame
 
-from jumper.jump_physics import JumpPhysics
+from jumper.physics import JumpPhysics
 
 
 class PointParticle:
