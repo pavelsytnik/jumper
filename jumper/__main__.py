@@ -29,6 +29,7 @@ dt = clock.tick(fps)
 jump = JumpPhysics()
 
 cube = PointParticle(jump)
+cube_side = 100
 
 menu = JumpMenu(
     [
@@ -37,7 +38,7 @@ menu = JumpMenu(
             get_value=lambda: jump.height,
             set_value=lambda v: setattr(jump, "height", v),
             min=5,
-            max=700,
+            max=screen_rect.height - cube_side,
             step=5,
             unit="px",
         ),
@@ -91,5 +92,5 @@ while running:
         (0, screen_rect.h - jump.height),
         (screen_rect.w, screen_rect.h - jump.height),
     )
-    cube.draw(screen, (225, 225, 175), 100)
+    cube.draw(screen, (225, 225, 175), cube_side)
     pygame.display.flip()
