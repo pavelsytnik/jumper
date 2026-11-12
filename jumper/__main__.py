@@ -63,8 +63,19 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-        menu.handle(event)
-        cube.handle(event)
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                cube.jump()
+
+            elif event.key == pygame.K_UP:
+                menu.next()
+            elif event.key == pygame.K_DOWN:
+                menu.prev()
+
+            elif event.key == pygame.K_RIGHT:
+                menu.selected.up()
+            elif event.key == pygame.K_LEFT:
+                menu.selected.down()
 
     cube.update(dt)
 

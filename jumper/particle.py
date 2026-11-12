@@ -13,11 +13,8 @@ class PointParticle:
         self.velocity = 0.0
         self.grounded = True
 
-    def handle(self, event: pygame.event.Event) -> None:
-        if event.type != pygame.KEYDOWN:
-            return
-
-        if event.key == pygame.K_SPACE and self.grounded:
+    def jump(self) -> None:
+        if self.grounded:
             self.velocity = self.physics.initial_velocity
             self.grounded = False
 

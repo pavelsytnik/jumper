@@ -44,19 +44,14 @@ class JumpMenu:
     def selected(self) -> JumpParameter:
         return self.params[self._selected_index]
 
-    def handle(self, event: pygame.event.Event) -> None:
-        if event.type != pygame.KEYDOWN:
-            return
+    def _advance(self, n: int) -> None:
+        self._selected_index = (self._selected_index + n) % len(self.params)
 
-        if event.key == pygame.K_UP:
-            self._selected_index = (self._selected_index - 1) % len(self.params)
-        elif event.key == pygame.K_DOWN:
-            self._selected_index = (self._selected_index + 1) % len(self.params)
+    def next(self) -> None:
+        self._advance(1)
 
-        elif event.key == pygame.K_RIGHT:
-            self.selected.up()
-        elif event.key == pygame.K_LEFT:
-            self.selected.down()
+    def prev(self) -> None:
+        self._advance(-1)
 
     def draw(self, surface: pygame.Surface, font: pygame.font.Font) -> None:
         for i, param in enumerate(self.params):
