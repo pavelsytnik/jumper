@@ -50,7 +50,7 @@ menu = JumpMenu(
     ],
 )
 
-renderer = JumpRenderer(screen, font)
+renderer = JumpRenderer(screen, font, cube_side)
 
 running = True
 

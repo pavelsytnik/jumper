@@ -6,10 +6,19 @@ from jumper.physics import JumpPhysics
 
 
 class JumpRenderer:
-    def __init__(self, surface: pygame.Surface, font: pygame.Font) -> None:
+    def __init__(
+        self,
+        surface: pygame.Surface,
+        font: pygame.Font,
+        cube_size: int
+    ) -> None:
         self.surface = surface
         self.surface_rect = surface.get_rect()
+
         self.font = font
+
+        self.cube_rect = pygame.Rect(0, 0, cube_size, cube_size)
+        self.cube_rect.midbottom = self.surface_rect.midbottom
 
     def draw(
         self,
@@ -44,11 +53,9 @@ class JumpRenderer:
         )
 
     def _draw_cube(self, cube: PointParticle) -> None:
-        cube_rect = pygame.rect.Rect(0, 0, 100, 100)
-        cube_rect.midbottom = self.surface_rect.midbottom
-        cube_rect.bottom -= cube.height
+        self.cube_rect.bottom = self.surface_rect.h - cube.height
 
-        pygame.draw.rect(self.surface, (225, 225, 175), cube_rect)
+        pygame.draw.rect(self.surface, (225, 225, 175), self.cube_rect)
 
     def _draw_menu(self, menu: JumpMenu) -> None:
         for i, param in enumerate(menu.params):
