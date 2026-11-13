@@ -29,22 +29,26 @@ class JumpRenderer:
         self.surface.fill((25, 0, 50))
 
         self._draw_cube(cube)
+        self._draw_apex_line(jump.height)
         self._draw_menu(menu)
 
         self._draw_info(f"Velocity: {cube.velocity:.0f}px/s", row=1)
         self._draw_info(f"Y: {cube.height:.0f}px", row=2)
 
-        pygame.draw.line(
-            self.surface,
-            (225, 255, 255),
-            (0, self.surface_rect.h - jump.height),
-            (self.surface_rect.w, self.surface_rect.h - jump.height),
-        )
-
     def _draw_cube(self, cube: PointParticle) -> None:
         self.cube_rect.bottom = self.surface_rect.h - cube.height
 
         pygame.draw.rect(self.surface, (225, 225, 175), self.cube_rect)
+
+    def _draw_apex_line(self, height: int) -> None:
+        h = self.surface_rect.h - height
+
+        pygame.draw.line(
+            self.surface,
+            (225, 255, 255),
+            (0, h),
+            (self.surface_rect.w, h),
+        )
 
     def _draw_menu(self, menu: JumpMenu) -> None:
         for i, param in enumerate(menu.params):
