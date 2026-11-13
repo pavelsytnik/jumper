@@ -31,19 +31,8 @@ class JumpRenderer:
         self._draw_cube(cube)
         self._draw_menu(menu)
 
-        velocity_text = self.font.render(
-            f"Velocity: {cube.velocity:.0f}px/s", True, (255, 255, 255)
-        )
-        velocity_text_rect = velocity_text.get_rect()
-        velocity_text_rect.bottomleft = (10, self.surface_rect.bottom - 40)
-        self.surface.blit(velocity_text, velocity_text_rect)
-
-        y_pos_text = self.font.render(
-            f"Y: {cube.height:.0f}px", True, (255, 255, 255)
-        )
-        y_pos_text_rect = y_pos_text.get_rect()
-        y_pos_text_rect.bottomleft = (10, self.surface_rect.bottom - 10)
-        self.surface.blit(y_pos_text, y_pos_text_rect)
+        self._draw_info(f"Velocity: {cube.velocity:.0f}px/s", row=1)
+        self._draw_info(f"Y: {cube.height:.0f}px", row=2)
 
         pygame.draw.line(
             self.surface,
@@ -67,3 +56,12 @@ class JumpRenderer:
                 box.fill((255, 255, 255))
                 box.set_alpha(64)
                 self.surface.blit(box, text_rect)
+
+    def _draw_info(self, text: str, row: int) -> None:
+        info = self.font.render(text, True, (255, 255, 255))
+        info_rect = info.get_rect()
+
+        padding = 30 * (row - 1) + 10
+        info_rect.bottomleft = (10, self.surface_rect.bottom - padding)
+
+        self.surface.blit(info, info_rect)
