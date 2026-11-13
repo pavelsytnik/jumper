@@ -1,8 +1,6 @@
 from collections.abc import Callable
 from dataclasses import dataclass
 
-import pygame
-
 
 @dataclass
 class JumpParameter:
@@ -52,13 +50,3 @@ class JumpMenu:
 
     def prev(self) -> None:
         self._advance(-1)
-
-    def draw(self, surface: pygame.Surface, font: pygame.font.Font) -> None:
-        for i, param in enumerate(self.params):
-            text = font.render(param.format(), True, (255, 255, 255))
-            text_rect = surface.blit(text, (10, 10 + i * 30))
-
-            if param == self.selected:
-                box = pygame.Surface(text.size, pygame.SRCALPHA)
-                box.fill((255, 255, 255, 64))
-                surface.blit(box, text_rect)

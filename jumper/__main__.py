@@ -3,6 +3,7 @@ import pygame
 from jumper.physics import JumpPhysics
 from jumper.menu import JumpMenu, JumpParameter
 from jumper.particle import PointParticle
+from jumper.renderer import JumpRenderer
 
 from jumper.utils import app_path
 
@@ -49,6 +50,8 @@ menu = JumpMenu(
     ],
 )
 
+renderer = JumpRenderer(screen, font)
+
 running = True
 
 while running:
@@ -74,29 +77,6 @@ while running:
 
     cube.update(dt)
 
-    screen.fill((25, 0, 50))
+    renderer.draw(cube, menu, jump)
 
-    menu.draw(screen, font)
-
-    velocity_text = font.render(
-        f"Velocity: {cube.velocity:.0f}px/s", True, (255, 255, 255)
-    )
-    velocity_text_rect = velocity_text.get_rect()
-    velocity_text_rect.bottomleft = (10, screen_rect.bottom - 40)
-    screen.blit(velocity_text, velocity_text_rect)
-
-    y_pos_text = font.render(
-        f"Y: {cube.height:.0f}px", True, (255, 255, 255)
-    )
-    y_pos_text_rect = y_pos_text.get_rect()
-    y_pos_text_rect.bottomleft = (10, screen_rect.bottom - 10)
-    screen.blit(y_pos_text, y_pos_text_rect)
-
-    pygame.draw.line(
-        screen,
-        (225, 255, 255),
-        (0, screen_rect.h - jump.height),
-        (screen_rect.w, screen_rect.h - jump.height),
-    )
-    cube.draw(screen, (225, 225, 175), cube_side)
     pygame.display.flip()

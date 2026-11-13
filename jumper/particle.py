@@ -1,5 +1,3 @@
-import pygame
-
 from jumper.physics import JumpPhysics
 
 
@@ -30,15 +28,3 @@ class PointParticle:
             self.velocity = 0.0
             self.height = self.ground
             self.grounded = True
-
-    def draw(
-        self,
-        surface: pygame.surface.Surface,
-        color: pygame.color.ColorLike,
-        side: int,
-    ) -> None:
-        cube = pygame.rect.Rect(0, 0, side, side)
-        cube.midbottom = surface.get_rect().midbottom
-        cube.bottom -= self.height
-
-        pygame.draw.rect(surface, color, cube)
