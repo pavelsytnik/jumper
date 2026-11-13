@@ -1,15 +1,10 @@
-import os
-
 import pygame
 
 from jumper.physics import JumpPhysics
 from jumper.menu import JumpMenu, JumpParameter
 from jumper.particle import PointParticle
 
-
-def app_path(path: str) -> str:
-    app_dir = os.path.join(os.path.dirname(__file__), "..")
-    return os.path.join(app_dir, path)
+from jumper.utils import app_path
 
 
 pygame.init()
